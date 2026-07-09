@@ -1,7 +1,7 @@
 """Reto integrador: control de ingreso al Anfiteatro del CENAC.
 
-Nombre del estudiante: __________________________________________
-Fecha: ____________________
+Nombre del estudiante: David Umaña Solano
+Fecha: 
 
 Contexto:
 El Anfiteatro del Centro Nacional de la Cultura (CENAC), en Costa Rica, tiene
@@ -73,3 +73,79 @@ Otros casos para probar:
 
 
 # Desarrolle su solución a partir de esta línea.
+
+capacidad_maxima = 700
+ocupacion_actual = 0
+grupos_aceptados = []
+grupos_rechazados = []
+
+continuar = "si"
+
+while continuar == "si":
+    entrada = input("Ingrese el tamaño del grupo o escriba fin: ")
+
+    if entrada.lower() == "fin":
+        continuar = "no"
+    else:
+        try:
+            grupo = int(entrada)
+
+            if grupo <= 0:
+                print("Entrada inválida. Debe ingresar un entero mayor que cero.\n")
+            else:
+                if ocupacion_actual + grupo <= capacidad_maxima:
+                    grupos_aceptados.append(grupo)
+                    ocupacion_actual = ocupacion_actual + grupo
+
+                    print("Grupo aceptado: ingresan", grupo, "personas.")
+                    print("Ocupación actual:", ocupacion_actual)
+                    print("Espacios disponibles:", capacidad_maxima - ocupacion_actual)
+                    print()
+                else:
+                    grupos_rechazados.append(grupo)
+
+                    print("Grupo rechazado: no hay espacio para", grupo, "personas.")
+                    print("Ocupación actual:", ocupacion_actual)
+                    print("Espacios disponibles:", capacidad_maxima - ocupacion_actual)
+                    print()
+
+        except ValueError:
+            print("Entrada inválida. Debe ingresar un entero mayor que cero o fin.\n")
+
+personas_admitidas = 0
+
+for grupo in grupos_aceptados:
+    personas_admitidas = personas_admitidas + grupo
+
+porcentaje_ocupacion = personas_admitidas / capacidad_maxima * 100
+espacios_disponibles = capacidad_maxima - personas_admitidas
+
+print("REPORTE FINAL")
+print("Grupos aceptados:", len(grupos_aceptados))
+print("Grupos rechazados:", len(grupos_rechazados))
+print("Personas admitidas:", personas_admitidas)
+print("Capacidad máxima:", capacidad_maxima)
+print("Espacios disponibles:", espacios_disponibles)
+print("Porcentaje de ocupación:", format(porcentaje_ocupacion, ".2f") + "%")
+
+if len(grupos_aceptados) > 0:
+    grupo_menor = grupos_aceptados[0]
+    grupo_mayor = grupos_aceptados[0]
+
+    for grupo in grupos_aceptados:
+        if grupo < grupo_menor:
+            grupo_menor = grupo
+
+        if grupo > grupo_mayor:
+            grupo_mayor = grupo
+
+    print("Grupo aceptado más pequeño:", grupo_menor)
+    print("Grupo aceptado más grande:", grupo_mayor)
+
+if personas_admitidas < 560:
+    print("Estado final: disponibilidad normal.")
+else:
+    if personas_admitidas < 700:
+        print("Estado final: ocupación preventiva.")
+    else:
+        print("Estado final: capacidad completa.")
